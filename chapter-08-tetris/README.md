@@ -8,3 +8,6 @@ Select one of the links below to navigate to the README for the codebase.
 
 - [Pre-Ported (Native) Codebase](output-native/README.md)
 - [Ported (WebAssembly) Codebase](output-wasm/README.md)
+
+mac:
+brew install SDL2_ttf
