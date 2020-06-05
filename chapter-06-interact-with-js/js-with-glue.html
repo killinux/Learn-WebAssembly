@@ -16,6 +16,8 @@
     Module()
       .then(result => {
         const m = result.asm;
+        console.log("result.asm:");
+        console.log(m);
         m._init();
 
         // Move the rectangle by 1px in the x and y every 20 milliseconds:

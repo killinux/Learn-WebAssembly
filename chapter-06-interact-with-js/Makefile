@@ -7,7 +7,7 @@ clean:
 	rimraf $(OUTPUT_FILES)
 
 js-with-glue: clean
-	emcc js-with-glue.c -O3 -s WASM=1 -s MODULARIZE=1 -o js-with-glue.js
+	emcc js-with-glue.c -O1 -s WASM=1 -s MODULARIZE=1 -s "EXPORTED_FUNCTIONS=['_init','_moveRect','_getIsRunning','_setIsRunning']"  -o js-with-glue.js
 
 js-without-glue: clean
 	emcc js-without-glue.cpp -Os -s WASM=1 -s SIDE_MODULE=1 \

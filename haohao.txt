@@ -1,0 +1,87 @@
+code:
+https://github.com/PacktPublishing/Learn-WebAssembly
+
+
+
+
+#############
+https://www.jianshu.com/p/950e411545f3
+
+
+https://coolex.info/blog/529.html
+这里的emcc要改成
+ emcc -s WASM=1 -s EXTRA_EXPORTED_RUNTIME_METHODS=["ccall"] -O3 -o add.js add.c
+
+
+
+Lean webassembly:
+https://wasdk.github.io/WasmFiddle/
+
+
+https://github.com/mikerourke/Learn-WebAssembly
+
+vscode注意
+c_cpp_properties.json
+
+
+5.胶水
+chapter-05-create-load-module
+使用sdl 用胶水和不用胶水
+
+./common/load-wasm.js
+
+需要把
+memoryBase: 0,
+改成：
+ __memory_base: 0,
+
+without-glue 的例子改成
+ without-glue: clean
+    emcc without-glue.c -Os -s WASM=1 -s SIDE_MODULE=1 \
+    -s "EXPORTED_FUNCTIONS=['_init','_moveRect','_getIsRunning','_setIsRunning']" -s BINARYEN_ASYNC_COMPILATION=0 -o without-glue.wasm
+
+    要把js用到的c的函数暴露出来
+
+
+6.和js的交互
+
+emscripten_run_script  
+
+EM_JS() 定义方法
+EM_ASM() 代码块
+EMSCRIPTEN_KEEPALIVE
+
+
+-s MODULARIZE=1
+ 模块化，复制webassembly instantiation method (to a degree)
+
+
+chapter-06-interact-with-js
+
+还是一个问题js-with-glue的代码没有暴露出接口
+
+
+需要EXPORTED_FUNCTIONS
+
+Makefile改成
+js-with-glue: clean
+    emcc js-with-glue.c -O1 -s WASM=1 -s MODULARIZE=1 -s "EXPORTED_FUNCTIONS=['_init','_moveRect','_getIsRunning','_setIsRunning']"  -o js-with-glue.js
+
+    
+
+
+
+
+  还是不好使，咋回事？？哈哈哈，-O3不行，优化太厉害了，在js-with-glue.html里打印
+  <script type="application/javascript">
+    Module()
+      .then(result => {
+        const m = result.asm;
+        console.log("result.asm:");
+        console.log(m);
+        m._init();
+
+        发现asm里的东西名字都被优化成字母了，找不到 _init了
+
+        所以把-O3换成-O1解决
+
