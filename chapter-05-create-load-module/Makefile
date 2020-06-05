@@ -21,4 +21,4 @@ try-with-glue: clean
 
 without-glue: clean
 	emcc without-glue.c -Os -s WASM=1 -s SIDE_MODULE=1 \
-	-s BINARYEN_ASYNC_COMPILATION=0 -o without-glue.wasm
+	-s "EXPORTED_FUNCTIONS=['_init','_moveRect','_getIsRunning','_setIsRunning']" -s BINARYEN_ASYNC_COMPILATION=0 -o without-glue.wasm
