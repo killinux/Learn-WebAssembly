@@ -1,1 +1,0 @@
-/usr/local/gcc8/bin/c++     CMakeFiles/Tetris.dir/src/board.cpp.o CMakeFiles/Tetris.dir/src/game.cpp.o CMakeFiles/Tetris.dir/src/main.cpp.o CMakeFiles/Tetris.dir/src/piece.cpp.o  -o Tetris -L/usr/lib64  -lSDL2 /usr/lib64/libSDL2_ttf.so 

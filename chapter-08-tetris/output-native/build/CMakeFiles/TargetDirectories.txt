@@ -1,3 +1,0 @@
-/opt/mt/Learn-WebAssembly/chapter-08-tetris/output-native/build/CMakeFiles/rebuild_cache.dir
-/opt/mt/Learn-WebAssembly/chapter-08-tetris/output-native/build/CMakeFiles/edit_cache.dir
-/opt/mt/Learn-WebAssembly/chapter-08-tetris/output-native/build/CMakeFiles/Tetris.dir
