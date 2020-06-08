@@ -11,10 +11,10 @@ js-with-glue: clean
 
 js-without-glue: clean
 	emcc js-without-glue.cpp -Os -s WASM=1 -s SIDE_MODULE=1 \
-	-s BINARYEN_ASYNC_COMPILATION=0 -o js-without-glue.wasm
+	-s MODULARIZE=1 -s "EXPORTED_FUNCTIONS=['_init','_moveCircle','_moveRect','_getIsRunning','_setIsRunning']" -s BINARYEN_ASYNC_COMPILATION=0 -o js-without-glue.wasm
 
 with-source-maps: clean
 	emcc js-without-glue.cpp -O1 -g4 \
-	-s WASM=1 -s SIDE_MODULE=1 -s BINARYEN_ASYNC_COMPILATION=0 \
+	-s WASM=1 -s SIDE_MODULE=1 -s BINARYEN_ASYNC_COMPILATION=0  -s MODULARIZE=1 -s "EXPORTED_FUNCTIONS=['_init','_moveCircle','_moveRect','_getIsRunning','_setIsRunning']" \
 	-o js-without-glue.wasm \
-	--source-map-base http://localhost:8080/chapter-06-interact-with-js
+	--source-map-base http://212.129.249.212/Learn-WebAssembly/chapter-06-interact-with-js/
