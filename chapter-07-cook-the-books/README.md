@@ -28,3 +28,14 @@ Run the following command to start the application:
 ```
 npm start
 ```
+
+add by hao:
+```
+npm install -D browser-sync@^2.24.4
+npm install uikit
+npm  install accounting-js@1.1.1
+npm install lodash@4.17.10
+npm install d3@5.5.0
+npm install vue@2.5.16
+npm install vue-numeric@2.3.0
+```
