@@ -39,3 +39,8 @@ npm install d3@5.5.0
 npm install vue@2.5.16
 npm install vue-numeric@2.3.0
 ```
+vim src/store/initializeWasm.js
+vim src/store/store.js
+vim src/store/api.js
+
+some problem about json ,

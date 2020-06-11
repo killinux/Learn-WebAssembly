@@ -5,7 +5,8 @@
  */
 const fetchAndCompileModules = () =>
   Promise.all(
-    ['../assets/main.wasm', '../assets/memory.wasm'].map(fileName =>
+    //['../assets/main.wasm', '../assets/memory.wasm'].map(fileName =>
+    ['../assets/main.wasm'].map(fileName =>
       fetch(fileName)
         .then(response => {
           if (response.ok) return response.arrayBuffer();
@@ -18,20 +19,21 @@ const fetchAndCompileModules = () =>
 /**
  * Returns an instance of the compiled "main.wasm" file.
  */
-const instantiateMain = (compiledMain, memoryInstance, wasmMemory) => {
-  const memoryMethods = memoryInstance.exports;
+//const instantiateMain = (compiledMain, memoryInstance, wasmMemory) => {
+const instantiateMain = (compiledMain,  wasmMemory) => {
+  //const memoryMethods = memoryInstance.exports;
   return WebAssembly.instantiate(compiledMain, {
     env: {
       //memoryBase: 0,
-      __memory_base: 0,
+      __memory_base:0,//add by hao
       //tableBase: 0,
       __table_base: 0,
       memory: wasmMemory,
       table: new WebAssembly.Table({ initial: 16, element: 'anyfunc' }),
       abort: console.log,
       _consoleLog: value => console.log(value),
-      _malloc: memoryMethods.malloc,
-      _free: memoryMethods.free
+      //_malloc: memoryMethods.malloc,
+      //_free: memoryMethods.free
     }
   });
 };
@@ -42,17 +44,18 @@ const instantiateMain = (compiledMain, memoryInstance, wasmMemory) => {
  */
 export default async function initializeWasm() {
   const wasmMemory = new WebAssembly.Memory({ initial: 1024 });
-  const [compiledMain, compiledMemory] = await fetchAndCompileModules();
+  //const [compiledMain, compiledMemory] = await fetchAndCompileModules();
+  const [compiledMain ] = await fetchAndCompileModules();
 
-  const memoryInstance = await WebAssembly.instantiate(compiledMemory, {
-    env: {
-      memory: wasmMemory
-    }
-  });
+ // const memoryInstance = await WebAssembly.instantiate(compiledMemory, {
+ //   env: {
+ //     memory: wasmMemory
+ //   }
+ // });
 
   const mainInstance = await instantiateMain(
     compiledMain,
-    memoryInstance,
+//    memoryInstance,
     wasmMemory
   );
 

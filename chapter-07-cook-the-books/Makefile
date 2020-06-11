@@ -7,6 +7,6 @@ clean:
 
 compile:
 	emcc lib/main.c -Os -s WASM=1 -s SIDE_MODULE=1 \
-	-s BINARYEN_ASYNC_COMPILATION=0 -o $(OUTPUT_FILE)
+	-s "EXPORTED_FUNCTIONS=['_getCategoryTotal','_addTransaction','_getFinalBalanceForType','_recalculateForCategories']" -s BINARYEN_ASYNC_COMPILATION=0 -o $(OUTPUT_FILE)
 
 build: clean compile

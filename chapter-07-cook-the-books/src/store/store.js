@@ -130,6 +130,7 @@ export const store = {
 export const initializeStore = async () => {
   const wasmTransactions = new WasmTransactions();
   store.wasm = await wasmTransactions.initialize();
+    //delete by hao for 'Unexpected token < in JSON at position 0'
   const transactions = await apiFetchTransactions();
   store.populateTransactions(transactions);
 };

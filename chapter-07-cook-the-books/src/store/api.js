@@ -21,8 +21,19 @@ const performApiFetch = (endpoint = '', init = {}) =>
     ...init
   }).then(response => response.json());
 
-export const apiFetchTransactions = () =>
-  performApiFetch('/transactions').then(({ result }) =>
+export const apiFetchTransactions = () =>{//modify by hao
+   // console.log("apiFetchTransactions---->");
+  return {
+        "result": {
+          "1": {
+            "category": "Sales Revenue"
+          },
+          "2": {
+            "category": "Hotels"
+          }
+        }
+      };
+//  performApiFetch('/transactions').then(({ result }) =>
     /*
      * The response object looks like this:
      * {
@@ -41,11 +52,15 @@ export const apiFetchTransactions = () =>
      * We need the "1" and "2" values for deleting or editing existing
      * records, so we store that in the transaction record as "apiId".
      */
-    Object.keys(result).map(apiId => ({
-      ...result[apiId],
-      apiId
-    }))
-  );
+ //   {
+  //  console.log("result:"+result);
+    //Object.keys(result).map(apiId => ({
+    //  ...result[apiId],
+    //  apiId
+    //}))
+   // }
+  //);
+ }
 
 export const apiEditTransaction = transaction =>
   performApiFetch(`/transactions/${transaction.apiId}`, {

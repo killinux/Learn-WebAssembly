@@ -23,6 +23,7 @@ export default {
     // for display in the table:
     getFormattedTransactions() {
       const getDisplayAmount = (type, amount) => {
+        console.log("amount:"+amount);//add by hao
         if (amount === 0) return accounting.formatMoney(amount);
         return accounting.formatMoney(amount, {
           format: { pos: '%s %v', neg: '%s (%v)' }
