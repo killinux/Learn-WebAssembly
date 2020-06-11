@@ -18,27 +18,53 @@
 
     const env = {
       table: new WebAssembly.Table({ initial: 8, element: 'anyfunc' }),
-//      _jsFillRect: function (x, y, w, h) {
-//        ctx.fillStyle = '#0000ff';
-//        ctx.fillRect(x, y, w, h);
-//      },
-//      _jsClearRect: function() {
-//        ctx.fillStyle = '#ff0000';
-//        ctx.fillRect(0, 0, 255, 255);
-//      },
+      __memory_base:0
     };
-
-    loadWasm('thismain.wasm', { env }).then(({ instance }) => {
-      const m = instance.exports;
-      var thisvalue = m._thistest();
-//      var testnode = m._testnode();
-      document.querySelector('#actionButton')
-        .addEventListener('click', event => {
-            console.log("thisvalue is :"+thisvalue);
-            //console.log("testnode is :"+testnode);
-        });
-
-    });
+    const fetchAndCompileModules = () =>
+      Promise.all(
+        ['thismain.wasm', 'thisadd.wasm'].map(fileName =>
+          fetch(fileName)
+            .then(response => {
+              if (response.ok) return response.arrayBuffer();
+              throw new Error(`Unable to fetch WebAssembly file: ${fileName}`);
+            })
+            .then(bytes => WebAssembly.compile(bytes))
+        )
+      );
+    async function initializeWasm() {
+        const wasmMemory = new WebAssembly.Memory({ initial: 1024 });
+        const [compiledMain, compiledAdd] = await fetchAndCompileModules();
+        
+        const addInstance = await WebAssembly.instantiate(compiledAdd, { env });
+        const instantiateMain = (compiledMain, addInstance, wasmMemory) => {
+            const addMethods = addInstance.exports;
+            return WebAssembly.instantiate(compiledMain, {
+              env: {
+                __memory_base:0,//add by hao
+                __table_base: 0,
+                memory: wasmMemory,
+                table: new WebAssembly.Table({ initial: 16, element: 'anyfunc' }),
+                abort: console.log,
+                _consoleLog: value => console.log(value),
+                _add: addMethods._add,//add by hao
+                _printf:console.log
+                //_free: memoryMethods.free
+              }
+            });
+        }
+        const mainInstance = await instantiateMain(
+            compiledMain,
+            addInstance,
+            wasmMemory
+        );
+        console.log("addInstance:"+addInstance.exports._addtest());
+        console.log("mainInstance:"+mainInstance.exports._thistest());
+        console.log("mainInstance.testnode:"+mainInstance.exports._testnode());
+        console.log("mainInstance.testadd:"+mainInstance.exports._testadd());
+      
+        //return mainInstance.exports;
+    }
+    initializeWasm();
   </script>
 </body>
 </html>

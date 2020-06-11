@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en-us">
+<head>
+  <title>No Glue Code</title>
+  <script type="application/javascript" src="../../common/load-wasm.js"></script>
+</head>
+<body>
+  <h1>No Glue Code</h1>
+  <canvas id="myCanvas" width="255" height="255"></canvas>
+  <div style="margin-top: 16px;">
+    <button id="actionButton" style="width: 100px; height: 24px;">
+      Pause
+    </button>
+  </div>
+  <script type="application/javascript">
+    const canvas = document.querySelector('#myCanvas');
+    const ctx = canvas.getContext('2d');
+
+    const env = {
+      table: new WebAssembly.Table({ initial: 8, element: 'anyfunc' }),
+      __memory_base:0
+//      _jsFillRect: function (x, y, w, h) {
+//        ctx.fillStyle = '#0000ff';
+//        ctx.fillRect(x, y, w, h);
+//      },
+    };
+
+    loadWasm('thisadd.wasm', { env }).then(({ instance }) => {
+      const m = instance.exports;
+      var thisvalue = m._addtest();
+      document.querySelector('#actionButton')
+        .addEventListener('click', event => {
+            console.log("thisvalue is :"+thisvalue);
+        });
+
+    });
+
+  </script>
+</body>
+</html>
