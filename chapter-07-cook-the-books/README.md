@@ -44,3 +44,6 @@ vim src/store/store.js
 vim src/store/api.js
 
 some problem about json ,
+
+please check for   memory.wasm 
+https://github.com/guybedford/wasm-intro

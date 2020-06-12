@@ -27,3 +27,6 @@ emrun --browser chrome --no_emrun_detect public/index.html
 
 If you navigate to `http://localhost:6931/index.html`, you should be able to play the game.
 
+add by hao:
+how to do about not use index.js , only use index.wasm
+
