@@ -20,8 +20,10 @@ self.addEventListener('message', event => {
     case 'COMPILE_WASM_REQUEST':
       const importObj = {
         env: {
-          memoryBase: 0,
-          tableBase: 0,
+//          memoryBase: 0,
+          __memory_base:0,
+          //tableBase: 0,
+          __table_base: 0,
           memory: new WebAssembly.Memory({ initial: 256 }),
           table: new WebAssembly.Table({ initial: 2, element: 'anyfunc' }),
           abort: console.log
@@ -31,6 +33,7 @@ self.addEventListener('message', event => {
       WebAssembly.instantiate(payload, importObj)
         .then(instance => {
           wasmInstance = instance.exports;
+          console.log("wasmInstance:"+wasmInstance)
           sendCompilationMessage();
         })
         .catch(error => {

@@ -43,10 +43,12 @@ export default class WasmWorker {
   // to the corresponding worker. The compiled module is instantiated
   // in the worker.
   initialize(name) {
+    console.log("this name:"+name);
     return fetch(`calc-${name}.wasm`)
       .then(response => response.arrayBuffer())
       .then(bytes => WebAssembly.compile(bytes))
       .then(wasmModule => {
+        console.log(`calc-${name}.wasm`);
         this.worker.postMessage({
           type: 'COMPILE_WASM_REQUEST',
           payload: wasmModule
@@ -58,6 +60,7 @@ export default class WasmWorker {
   // Posts a message to the worker thread to call the `calculate`
   // method from the Wasm instance:
   calculate(firstVal, secondVal) {
+    console.log("calculate----->");
     this.worker.postMessage({
       type: 'CALC_REQUEST',
       payload: {
