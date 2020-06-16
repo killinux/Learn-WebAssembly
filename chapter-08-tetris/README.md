@@ -11,3 +11,6 @@ Select one of the links below to navigate to the README for the codebase.
 
 mac:
 brew install SDL2_ttf
+
+sdl demo is clone from
+https://github.com/shlomnissan/sdl-wasm
